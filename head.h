@@ -1,4 +1,5 @@
 using namespace std;
+#include <vector>
 
 struct vertex{
 	int id;
@@ -14,4 +15,4 @@ public:
 	int size();
 	vertex operator[](int i);
 	double cost();
-}
+};

@@ -7,11 +7,11 @@ using namespace std;
 int main(){
 	int n;
 	cin>>n;
-	vector<point> data;
+	vector<vertex> data;
 	for(int i=0; i<n; i++){
 		int x,y;
 		cin>>x>>y;
-		data.push_back({x,y});
+		data.push_back({i,x,y});
 	}
 	
 	for(auto p: data){
