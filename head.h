@@ -5,12 +5,13 @@ struct vertex{
 	int x,y;
 };
 
+double distance( vertex v1, vertex v2 );
+
 class Path{
 private:
-	int length;
 	vector<vertex> path;	
 public:
-	int length();
+	int size();
 	vertex operator[](int i);
-
+	double cost();
 }
