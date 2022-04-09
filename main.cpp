@@ -27,8 +27,8 @@ int main(){
 	cout<<"\nThe path itself:";
 	Path.show();
 
-	Path.try_to_improve_2(0,2);
-
+	// Path.try_to_improve_2(0,2);
+	Path.local_search_2();
 	Path.show();
 
 	return 0;

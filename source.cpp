@@ -5,6 +5,10 @@
 
 using namespace std;
 
+void vertex::show(){
+	cout<<x<<" "<<y<<"\n";
+}
+
 double distance( vertex v1, vertex v2 ){
 	return sqrt( pow( v1.x-v2.x , 2 ) + pow( v1.y-v2.y , 2 ) );
 }
@@ -34,14 +38,15 @@ double Path::cost(){
 
 void Path::try_to_improve_2(int v1, int v2){
 
-	cout<<"improving\n";
+	cout<<"improving for "<<v1<<", "<<v2<<"\n";
 
 	if( abs(v1-v2)<2 || max(v1,v2)>path.size()-1 ){
 		cout<<"failed to improve\n";
 	}
 	else{
-		v1 %= path.size();
-		v2 %= path.size();
+		int n = path.size();
+		v1 %= n;
+		v2 %= n;
 
 		if(v1>v2) swap(v1,v2);
 		double init_dist = distance( path[v1], path[v1+1] )
@@ -57,6 +62,17 @@ void Path::try_to_improve_2(int v1, int v2){
 			reverse( it1, it2 );
 		}
 	}
+}
+
+void Path::local_search_2(){
+	int n = path.size();
+	for(int i=0; i<n-2; i++)
+		for(int j=i+2; j<n-1; j++)
+			this->try_to_improve_2(i,j);
+}
+
+void Path::try_to_improve_3(int v1, int v2, int v3){
+	
 }
 
 void Path::append( vertex &v ){
