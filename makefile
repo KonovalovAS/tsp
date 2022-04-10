@@ -8,4 +8,4 @@ source.o: source.o head.h
 	g++ -c source.cpp
 
 clear:
-	rm *.o
+	rm *.o start

@@ -4,7 +4,7 @@ using namespace std;
 
 struct vertex{
 	int id;
-	int x,y;
+	double x,y;
 
 	void show();
 };
