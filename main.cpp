@@ -17,10 +17,28 @@ int main(){
 	Path Path( data );
 	Path.append( data[0] );
 	
-	// cout<<"\nInitial length: "<<Path.cost();
+	// Commented piece of code
+	// will find a truly optimal solution (naively)
+	/*
+	 *
+	double cost0 = Path.cost();
+	Path.local_search_3();
+	Path.local_search_2();
+	double cost = Path.cost();
 
-	// cout<<"\nImproved:\n";
-	(n>6) ? Path.local_search_3() : Path.local_search_2();
+	int i=1;
+	while( cost < cost0 ){
+		cout<<"iter "<<i<<"\n";
+		i++;
+		cost0 = cost;
+		Path.local_search_3();
+		Path.local_search_2();
+		cost = Path.cost();
+	}
+
+	*/
+
+	( n > 6 ) ? Path.local_search_3() : Path.local_search_2();
 	cout<<Path.cost()<<" 0\n";
 	Path.show_order();
 	cout<<endl;
