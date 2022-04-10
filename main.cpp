@@ -4,10 +4,10 @@ using namespace std;
 
 int main(){
 	int n;
-	cout<<"Enter the number of vertices: ";
+	//cout<<"Enter the number of vertices: ";
 	cin>>n;
 	vector<vertex> data;
-	cout<<"Enter "<<n<<" couples of coordinates:\n";
+	//cout<<"Enter "<<n<<" couples of coordinates:\n";
 	for(int i=0; i<n; i++){
 		int x,y;
 		cin>>x>>y;
@@ -17,14 +17,12 @@ int main(){
 	Path Path( data );
 	Path.append( data[0] );
 	
-	cout<<"\nLength: "<<Path.cost();
-	cout<<"\nThe path itself:";
-	Path.show();
+	// cout<<"\nInitial length: "<<Path.cost();
 
-	cout<<"Improved:";
+	// cout<<"\nImproved:\n";
 	(n>6) ? Path.local_search_3() : Path.local_search_2();
-	Path.show();
-	cout<<"New length is "<<Path.cost()<<"\n";
+	cout<<Path.cost()<<" 0\n";
+	Path.show_order();
 
 	return 0;
 }

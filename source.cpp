@@ -47,10 +47,8 @@ void Path::try_to_improve_2(int v1, int v2){
 	// improval attempt
 	double new_dist = distance( path[v1], path[v2] ) + distance( path[v1+1], path[v2+1] );
 	if( init_dist > new_dist ){
-		cout<<"New dist: "<<new_dist<<"\n";
 		vector<vertex>::iterator it1 = next( path.begin(), v1+1 );
 		vector<vertex>::iterator it2 = next( it1, v2-v1 );
-		cout<<(*it1).x<<" "<<(*it1).y<<" "<<(*it2).x<<" "<<(*it2).y<<"\n";
 		reverse( it1, it2 );
 	}
 }
@@ -63,6 +61,7 @@ void Path::local_search_2(){
 }
 
 void Path::try_to_improve_3(int v1, int v2, int v3){
+	
 	// cout<<"improving for "<<v1<<", "<<v2<<" "<<v3<<"\n";
 
 	vector<vertex> tmp = { path[v1], path[v1+1],
@@ -122,9 +121,7 @@ void Path::append( vertex &v ){
 	path.push_back(v);
 }
 
-void Path::show(){
-	cout<<"\n\n";
-	for(auto v: path)
-		cout<<v.x<<" "<<v.y<<"\n";
-	cout<<"\n\n";
+void Path::show_order(){
+	for(int i=0; i<path.size()-1; i++)
+		cout<<path[i].id<<" ";
 }

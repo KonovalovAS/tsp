@@ -7,8 +7,5 @@ main.o: main.cpp
 source.o: source.o head.h
 	g++ -c source.cpp
 
-clean_o:
+clear:
 	rm *.o
-
-clean:
-	rm *.o start
