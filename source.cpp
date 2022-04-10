@@ -74,29 +74,6 @@ void Path::try_to_improve_3(int v1, int v2, int v3){
 		for(int j=i; j<6; j++)
 			d[i][j] = distance( tmp[i], tmp[j] );
 
-	/*
-	// Not the brightest idea
-
-	double d12 = distance( path[v1], path[v1+1] ),
-	       d13 = distance( path[v1], path[v2] ),
-	       d14 = distance( path[v1], path[v2+1] ),
-	       d15 = distance( path[v1], path[v3] ),
-	       d24 = distance( path[v1+1], path[v3+1] ),
-	       d25 = distance( path[v1+1], path[v3] ),
-	       d26 = distance( path[v1+1], path[v3+1] ),
-	       d34 = distance( path[v2], path[v2+1] ),
-	       d35 = distance( path[v2], path[v3] ),
-	       d36 = distance( path[v2], path[v3+1] ),
-	       d46 = distance( path[v2+1], path[v3+1] ),
-	       d56 = distance( path[v3], path[v3+1] );
-
-	double d0 = d12 + d34 + d56,
-	       d1 = d14 + d25 + d36,
-	       d2 = d14 + d35 + d26,
-	       d3 = d13 + d25 + d46,
-	       d4 = d15 + d24 + d56;
-	*/
-
 	vector<double> options = {
 		d[0][1] + d[2][3] + d[4][5],
 		d[0][4] + d[1][4] + d[2][5],

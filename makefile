@@ -9,3 +9,6 @@ source.o: source.o head.h
 
 clean_o:
 	rm *.o
+
+clean:
+	rm *.o start
