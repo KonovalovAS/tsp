@@ -25,6 +25,7 @@ public:
 	void try_to_improve_2(int v1, int v2);
 
 	void local_search_2();
+	void local_search_3();
 
 	void append( vertex &v );
 	void show();
