@@ -15,7 +15,11 @@ int main(){
 	}
 	
 	Path Path( data );
-	Path.append( data[0] );
+
+	Path.sort_by_x();
+	Path.sort_by_y();
+
+	Path.append( Path[0] );
 	
 	// Commented piece of code
 	// will find a truly optimal solution (naively)

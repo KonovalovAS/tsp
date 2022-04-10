@@ -36,6 +36,19 @@ double Path::cost(){
 	return s;
 }
 
+
+void Path::sort_by_x(){
+	stable_sort( path.begin(), path.end(), []( vertex a, vertex b )
+			{ return a.x < b.x; } );
+}
+
+
+void Path::sort_by_y(){
+	stable_sort( path.begin(), path.end(), []( vertex a, vertex b )
+			{ return a.y < b.y; } );
+}
+
+
 void Path::try_to_improve_2(int v1, int v2){
 
 	// cout<<"improving for "<<v1<<", "<<v2<<"\n";
@@ -117,7 +130,7 @@ void Path::local_search_3(){
 				this->try_to_improve_3(i,j,k);
 }
 
-void Path::append( vertex &v ){
+void Path::append( vertex v ){
 	path.push_back(v);
 }
 
