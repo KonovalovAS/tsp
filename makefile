@@ -4,7 +4,7 @@ start: main.o source.o
 main.o: main.cpp
 	g++ -c main.cpp
 
-source.o: source.o head.h
+source.o: source.cpp head.h
 	g++ -c source.cpp
 
 clear:
