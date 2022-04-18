@@ -6,7 +6,6 @@ double dist( pt a, pt b ){
     return sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) );
 }
 
-
 Path::Path(){
     num_of_nodes = 0;
     last_improvement_status = false;
@@ -40,7 +39,6 @@ void Path::add_node( pt &new_node ){
 
 void Path::try_to_improve_2(int v1, int v2){
 
-    //cout<<"Improving for "<<v1<<", "<<v2<<"\n";
     if(v1>v2) swap(v1,v2);
 
     double init_dist =
@@ -61,6 +59,7 @@ double Path::length(){
     double len = 0;
     for(int i=0; i<num_of_nodes; i++)
         len += dist( path[i], path[(i+1)%num_of_nodes] );
+    
     return len;
 }
 
@@ -69,7 +68,7 @@ void Path::local_search_2(){
     for(int i=0; i<num_of_nodes-2; i++)
         for(int j=i+2; j<num_of_nodes; j++){
 
-            this->try_to_improve_2(i,j);
+            try_to_improve_2(i,j);
 
             if(last_improvement_status){
                 last_improvement_status = false;
@@ -80,13 +79,11 @@ void Path::local_search_2(){
 }
 
 void Path::show_a(){
-    for(auto p: path){
+    for(auto p: path)
         cout<<p.id<<": ( "<<p.x<<", "<<p.y<<" )\n";
-    }
 }
 
 void Path::show(){
-    for(auto p: path){
+    for(auto p: path)
         cout<<p.id<<" ";
-    }
 }
