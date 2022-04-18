@@ -1,36 +1,39 @@
-using namespace std;
 #include <iostream>
 #include <vector>
+#include <deque>
+#include <algorithm>
+#include <cmath>
+#include <fstream>
 
-struct vertex{
-	int id;
-	double x,y;
+using namespace std;
 
-	void show();
+struct pt{
+    int id;
+    double x,y;
 };
 
-double distance( vertex v1, vertex v2 );
+double dist( pt a, pt b );
 
 class Path{
 private:
-	vector<vertex> path;
+    deque<pt> path;
+    int num_of_nodes;
+
+    bool last_improvement_status;
 
 public:
-	Path( vector<vertex> &path_init );
 
-	int size();
-	vertex operator[](int i);
-	double cost();
+    Path();
 
-	void sort_by_x();
-	void sort_by_y();
+    void add_node( pt &new_node );
 
-	void try_to_improve_3(int v1, int v2, int v3);
-	void try_to_improve_2(int v1, int v2);
+    void try_to_improve_2(int v1, int v2);
 
-	void local_search_2();
-	void local_search_3();
+    double length();
 
-	void append( vertex v );
-	void show_order();
+    void local_search_2();
+
+    void show_a();
+    
+    void show();
 };

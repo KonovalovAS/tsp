@@ -3,50 +3,22 @@
 using namespace std;
 
 int main(){
-	int n;
-	//cout<<"Enter the number of vertices: ";
-	cin>>n;
-	vector<vertex> data;
-	//cout<<"Enter "<<n<<" couples of coordinates:\n";
-	for(int i=0; i<n; i++){
-		double x,y;
-		cin>>x>>y;
-		data.push_back({i,x,y});
-	}
-	
-	Path Path( data );
+ 
+    Path My_path;	
+    int n;
+    cin>>n;
+    for(int i=0; i<n; i++){
+ 	double x,y;
+    	cin >> x >> y;
+   	pt newone = {i,x,y};
+   	My_path.add_node(newone);
+    }
 
-	Path.sort_by_x();
-	Path.sort_by_y();
+    My_path.local_search_2();
+    double res = My_path.length();
+    cout << res << endl;
+    My_path.show();
 
-	Path.append( Path[0] );
-	
-	// Commented piece of code
-	// will find a truly optimal solution (naively)
-	/*
-	 *
-	double cost0 = Path.cost();
-	Path.local_search_3();
-	Path.local_search_2();
-	double cost = Path.cost();
-
-	int i=1;
-	while( cost < cost0 ){
-		cout<<"iter "<<i<<"\n";
-		i++;
-		cost0 = cost;
-		Path.local_search_3();
-		Path.local_search_2();
-		cost = Path.cost();
-	}
-
-	*/
-
-	Path.local_search_3();
-	Path.local_search_2();
-	cout<<Path.cost()<<" 0\n";
-	Path.show_order();
-	cout<<endl;
-
-	return 0;
+    return 0;
 }
+

@@ -1,140 +1,92 @@
 #include "head.h"
-#include <cmath>
-#include <vector>
-#include <algorithm>
 
 using namespace std;
 
-void vertex::show(){
-	cout<<x<<" "<<y<<"\n";
-}
-
-double distance( vertex v1, vertex v2 ){
-	return sqrt( pow( v1.x-v2.x , 2 ) + pow( v1.y-v2.y , 2 ) );
-}
-
-Path::Path( vector<vertex> &path_init ){
-	path = path_init;
-}
-
-int Path::size(){
-	return path.size();
-}
-
-vertex Path::operator[](int i){
-	if( i < path.size() )
-		return path[i];
-	else
-		return {-1,0,0};
-}
-
-double Path::cost(){
-	double s(0);
-	for(int i=1; i<path.size(); i++){
-		s += distance( path[i-1], path[i]  );
-	}
-	return s;
+double dist( pt a, pt b ){
+    return sqrt( pow( a.x - b.x, 2 ) + pow( a.y - b.y, 2 ) );
 }
 
 
-void Path::sort_by_x(){
-	stable_sort( path.begin(), path.end(), []( vertex a, vertex b )
-			{ return a.x < b.x; } );
+Path::Path(){
+    num_of_nodes = 0;
+    last_improvement_status = false;
 }
 
+void Path::add_node( pt &new_node ){
+    if( num_of_nodes > 1 ){
+        path.push_back( path[0] );
+        deque<pt>::iterator it = path.begin(),
+                            here = it+1;
+        double best_len = dist( *it, new_node ) + dist( new_node, *(it+1) );
+        it++;
 
-void Path::sort_by_y(){
-	stable_sort( path.begin(), path.end(), []( vertex a, vertex b )
-			{ return a.y < b.y; } );
+        for(int i=0; i<num_of_nodes-1; i++){
+            double tmp = dist( *it, new_node ) + dist( new_node, *(it+1) );
+            if( tmp < best_len ){
+                best_len = tmp;
+                here = it+1;
+            }
+            it++;
+        }
+
+        path.emplace( here, new_node );
+        path.pop_back();
+    }
+    else
+        path.push_back( new_node );
+
+    num_of_nodes++;
 }
-
 
 void Path::try_to_improve_2(int v1, int v2){
 
-	// cout<<"improving for "<<v1<<", "<<v2<<"\n";
+    //cout<<"Improving for "<<v1<<", "<<v2<<"\n";
+    if(v1>v2) swap(v1,v2);
 
-	if(v1>v2) swap(v1,v2);
-	double init_dist = distance( path[v1], path[v1+1] )
-			 + distance( path[v2], path[v2+1] );
+    double init_dist =
+          dist( path[v1], path[v1+1] )
+        + dist( path[v2], path[v2+1] );
 
-	// improval attempt
-	double new_dist = distance( path[v1], path[v2] ) + distance( path[v1+1], path[v2+1] );
-	if( init_dist > new_dist ){
-		vector<vertex>::iterator it1 = next( path.begin(), v1+1 );
-		vector<vertex>::iterator it2 = next( it1, v2-v1 );
-		reverse( it1, it2 );
-	}
+    // improval attempt
+    double new_dist = dist( path[v1], path[v2] ) + dist( path[v1+1], path[v2+1] );
+    if( init_dist > new_dist ){
+        deque<pt>::iterator it1 = next( path.begin(), v1+1 );
+        deque<pt>::iterator it2 = next( it1, v2-v1 );
+        reverse( it1, it2 );
+        last_improvement_status = true;
+    }
+}
+
+double Path::length(){
+    double len = 0;
+    for(int i=0; i<num_of_nodes; i++)
+        len += dist( path[i], path[(i+1)%num_of_nodes] );
+    return len;
 }
 
 void Path::local_search_2(){
-	int n = path.size();
-	for(int i=0; i<n-3; i++)
-		for(int j=i+2; j<n-1; j++)
-			this->try_to_improve_2(i,j);
+    path.push_back( path[0] );
+    for(int i=0; i<num_of_nodes-2; i++)
+        for(int j=i+2; j<num_of_nodes; j++){
+
+            this->try_to_improve_2(i,j);
+
+            if(last_improvement_status){
+                last_improvement_status = false;
+                j = i+2;
+            }
+        }
+    path.pop_back();
 }
 
-void Path::try_to_improve_3(int v1, int v2, int v3){
-	
-	// cout<<"improving for "<<v1<<", "<<v2<<" "<<v3<<"\n";
-
-	vector<vertex> tmp = { path[v1], path[v1+1],
-				path[v2], path[v2+1],
-				path[v3], path[v3+1] };
-	vector<vector<double>> d(6,vector<double> (6,0));
-
-	for(int i=1; i<6; i++)
-		for(int j=i; j<6; j++)
-			d[i][j] = distance( tmp[i], tmp[j] );
-
-	vector<double> options = {
-		d[0][1] + d[2][3] + d[4][5],
-		d[0][4] + d[1][4] + d[2][5],
-		d[0][4] + d[2][4] + d[1][5],
-		d[0][2] + d[1][4] + d[3][5],
-		d[0][4] + d[1][3] + d[4][5] };
-
-	vector<double>::iterator min = min_element( options.begin(), options.end() );
-	int det = distance( options.begin(), min );
-
-	vector<vertex>::iterator it1 = next( path.begin(), v1+1 ),
-				 it2 = next( it1, v2-v1 ),
-				 it3 = next( it2, v3-v2 );
-
-	switch( det ){
-		case 1:
-			reverse( it1, it2 );
-			reverse( it2, it3 );
-			reverse( it1, it3 );
-			break;
-		case 2: 
-			reverse( it2, it3 );
-			reverse( it1, it3 );
-			break;
-		case 3: 
-			reverse( it2, it3 );
-			reverse( it1, it2 );
-			break;
-		case 4:
-			reverse( it1, it2 );
-			reverse( it1, it3 );
-			break;
-	}
-
+void Path::show_a(){
+    for(auto p: path){
+        cout<<p.id<<": ( "<<p.x<<", "<<p.y<<" )\n";
+    }
 }
 
-void Path::local_search_3(){
-	int n = path.size();
-	for(int i=0; i<n-5; i++)
-		for(int j=i+2; j<n-3; j++)
-			for(int k=j+2; k<n-1; k++)
-				this->try_to_improve_3(i,j,k);
-}
-
-void Path::append( vertex v ){
-	path.push_back(v);
-}
-
-void Path::show_order(){
-	for(int i=0; i<path.size()-1; i++)
-		cout<<path[i].id<<" ";
+void Path::show(){
+    for(auto p: path){
+        cout<<p.id<<" ";
+    }
 }
